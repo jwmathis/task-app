@@ -1,19 +1,12 @@
 package main
 
 import (
-	"encoding/json"
-	"errors"
 	"fmt"
 	"os"
 	"strconv"
+	"task-app/utils/fileio"
+	"task-app/utils/task"
 )
-
-// Defining a task
-type Task struct {
-	ID          int    `json:"id"`
-	Description string `json:"description"`
-	Status      string `json:"status"`
-}
 
 // Function to check for errors
 func checkErr(e error) {
@@ -22,77 +15,23 @@ func checkErr(e error) {
 	}
 }
 
-func checkAndCreateFile(filename string) (*os.File, error) {
-	// Check if file exists
-	_, err := os.Stat(filename)
-	if err != nil {
-		if errors.Is(err, os.ErrNotExist) {
-			// File does not exist, create it
-			file, createErr := os.Create(filename)
-			if createErr != nil {
-				return nil, fmt.Errorf("error creating file: %w", createErr)
-			}
-			// Debugging messages
-			//fmt.Printf("File '%s' created successfully\n", filename)
-			return file, nil
-		} else {
-			return nil, fmt.Errorf("error checking file: %w", err)
-		}
-	}
-
-	// File already exists
-	file, openErr := os.OpenFile(filename, os.O_RDWR, 0644)
-	if openErr != nil {
-		return nil, fmt.Errorf("file exists but error opening file: %w", openErr)
-	}
-	// Debugging messages
-	//fmt.Printf("File '%s' already exists\n", filename)
-	return file, nil
-}
-
-func readFromJsonFile(filename string) ([]Task, error) {
-	var existing_tasks []Task
-
-	data, err := os.ReadFile(filename)
-	if err == nil {
-		if len(data) > 0 {
-			if err := json.Unmarshal(data, &existing_tasks); err != nil {
-				return nil, fmt.Errorf("error unmarshalling data: %w", err)
-			}
-		}
-	} else if !errors.Is(err, os.ErrNotExist) {
-		return nil, fmt.Errorf("error reading file: %w", err)
-	}
-	return existing_tasks, nil
-}
-
-func writeToJsonFile(filename string, tasks []Task) error {
-	data, err := json.Marshal(tasks)
-	if err != nil {
-		return fmt.Errorf("error marshalling data: %w", err)
-	}
-	return os.WriteFile(filename, data, 0644)
-}
-
 func main() {
 
 	// Check if the user provided a command
 	// Give instructions for use
 	if len(os.Args) < 2 {
-		fmt.Println("Usage syntax: task-app [command] [arguments]")
-		fmt.Println("Valid commands include: add, list, delete, or done.")
-		fmt.Println("Example: task-app add \"Buy groceries\"")
+		printUsage()
 		return
 	}
 
 	// Get the command
 	command := os.Args[1] // Store firts argument as command using inference
-	filePath := "temp.json"
+	filePath := "data/user_tasks.json"
 
-	file, _ := checkAndCreateFile(filePath) // Check if file exists and create if not and open the file
+	file, _ := fileio.CheckAndCreateFile(filePath) // Check if file exists and create if not and open the file
 	defer file.Close()
 
-	existing_tasks, err := readFromJsonFile(filePath)
+	existing_tasks, err := fileio.ReadFromJsonFile(filePath)
 	checkErr(err)
 
 	// Use the command to execute the appropriate function
@@ -107,36 +46,17 @@ func main() {
 
 		// Get the task description
 		taskDescription := os.Args[2]
-
-		// Create a new task
-		new_task := Task{
-			ID:          len(existing_tasks) + 1,
-			Description: taskDescription,
-			Status:      "todo",
-		}
-
-		// Append the new task to the existing tasks
-		existing_tasks = append(existing_tasks, new_task)
-
-		// Write the updated tasks to the file
-		err := writeToJsonFile(filePath, existing_tasks)
+		existing_tasks, err = task.AddTask(existing_tasks, taskDescription)
 		checkErr(err)
 
 		// Print a confirmation message
 		fmt.Printf("Task added: %s\n", taskDescription)
 
-	case "list", "li":
+	case "list", "li", "view":
 		// Handle listing tasks
 		fmt.Println("Listing tasks:")
 
-		// Loop through the existing tasks and print them
-		if len(existing_tasks) == 0 {
-			fmt.Println("No tasks found.")
-		} else {
-			for i, task := range existing_tasks {
-				fmt.Printf("%d. %s (%s)\n", i+1, task.Description, task.Status)
-			}
-		}
+		task.ListTasks(existing_tasks)
 
 	case "done", "complete", "c", "mark":
 		// Handle marking a task as done
@@ -150,17 +70,11 @@ func main() {
 			for i := range existing_tasks {
 				existing_tasks[i].Status = "done"
 			}
-			err := writeToJsonFile(filePath, existing_tasks)
-			checkErr(err)
 		} else {
 			taskID_int, err := strconv.Atoi(taskID)
 			checkErr(err)
-			if taskID_int > len(existing_tasks) || taskID_int < 1 {
-				fmt.Println("Invalid task ID.")
-				return
-			}
-			existing_tasks[taskID_int-1].Status = "done"
-			err = writeToJsonFile(filePath, existing_tasks)
+
+			existing_tasks, err = task.MarkTaskAsDone(existing_tasks, taskID_int)
 			checkErr(err)
 		}
 
@@ -173,23 +87,11 @@ func main() {
 
 		taskID := os.Args[2]
 		if taskID == "all" {
-			existing_tasks = []Task{}
-			err := writeToJsonFile(filePath, existing_tasks)
-			checkErr(err)
+			existing_tasks = []task.Task{}
 		} else {
 			taskID_int, err := strconv.Atoi(taskID)
 			checkErr(err)
-			updateTasks := []Task{}
-			var j int = 0
-			for _, task := range existing_tasks {
-				if task.ID != taskID_int {
-					task.ID = j
-					updateTasks = append(updateTasks, task)
-					j++
-				}
-			}
-
-			err = writeToJsonFile(filePath, updateTasks)
+			existing_tasks, err = task.DeleteTask(existing_tasks, taskID_int)
 			checkErr(err)
 
 			// Print a confirmation message
@@ -197,8 +99,17 @@ func main() {
 		}
 
 	default:
-		fmt.Println("Invalid command. Valid commands include: add, list, delete, or done.")
+		printUsage()
 		return
 	}
 
+	// Write the updated tasks to the file
+	err = fileio.WriteToJsonFile(filePath, existing_tasks)
+	checkErr(err)
+}
+
+func printUsage() {
+	fmt.Println("Usage syntax: task-app [command] [arguments]")
+	fmt.Println("Valid commands include: add, list, delete, or done.")
+	fmt.Println("Example: task-app add \"Buy groceries\"")
 }
