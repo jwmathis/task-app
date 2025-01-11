@@ -1,0 +1,4 @@
+Hello world!
+My Name is Jdub.
+This is some random text
+testTing out THE GOlangGO read and open functions
