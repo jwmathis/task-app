@@ -1,10 +1,12 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"strconv"
 	"task-app/utils/fileio"
+	"task-app/utils/help"
 	"task-app/utils/task"
 )
 
@@ -17,10 +19,17 @@ func checkErr(e error) {
 
 func main() {
 
+	helpFlag := flag.Bool("help", false, "Show help menu")
+	flag.Parse()
+
+	if *helpFlag {
+		help.PrintHelp()
+		return
+	}
 	// Check if the user provided a command
 	// Give instructions for use
 	if len(os.Args) < 2 {
-		printUsage()
+		help.PrintHelp()
 		return
 	}
 
