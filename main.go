@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 	"task-app/utils/fileio"
 	"task-app/utils/help"
@@ -34,8 +35,8 @@ func main() {
 	}
 
 	// Get the command
-	command := os.Args[1] // Store firts argument as command using inference
-	filePath := "data/user_tasks.json"
+	command := os.Args[1]                                // Store firts argument as command using inference
+	filePath := filepath.Join("data", "user_tasks.json") // Set the file path to the JSON file; cross-platform compatible
 
 	file, _ := fileio.CheckAndCreateFile(filePath) // Check if file exists and create if not and open the file
 	defer file.Close()
