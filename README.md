@@ -15,32 +15,32 @@ interface for managing your task list.
 
 ### Prerequisites
 
-Make sure you have Go installed. You can download and install it from the official [Go website](https://go.dev/).
+Make sure you have the latest version of Go installed. You can download and install it from the official [Go website](https://go.dev/).
 
 1. Clone the repository
 
 Download the project files from GitHub:
 ```
 git clone https://github.com/jwmathis/task-app.git
+```
+2. Navigate to repository location
+```
 cd task-app
-```
-
-2. Install Dependencies
-
-Run the following command in terminal
-```
-go mod tidy
 ```
 
 ## Usage
 
 ### Running the app
-To start the task app, run:
+1. To start the task app, run:
 
 ```
-go run main.go
+go build -o task-app
 ```
+2. Afterwards, use the following command to run the app:
 
+```
+./task-app <command> [options]
+```
 ### Available Commands
 1. *Add Task* Add a new task to the list
 ```
