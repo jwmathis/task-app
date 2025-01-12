@@ -1,6 +1,8 @@
 package task
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // Task represents a single task in the task app
 type Task struct {
@@ -8,6 +10,15 @@ type Task struct {
 	Description string `json:"description"`
 	Status      string `json:"status"`
 }
+
+//40.98
+
+// Define colors
+const (
+	Reset = "\033[0m"
+	Red   = "\033[31m"
+	Green = "\033[32m"
+)
 
 // AddTask adds a new task to the task list
 func AddTask(existing_tasks []Task, description string) ([]Task, error) {
@@ -32,13 +43,22 @@ func ListTasks(existing_tasks []Task) {
 
 	} else {
 
+		color := Reset // Default color
 		fmt.Println("ID    Status	Description")
 		fmt.Println("----  ------	-------------")
 		for i, task := range existing_tasks { // Iterate over the tasks
-			fmt.Printf("%d.    %s   	%s\n", i+1, task.Status, task.Description) // Print the task
+
+			if task.Status == "done" { // If the task is done
+				color = Green // Set the color to green
+			} else if task.Status == "todo" { // If the task is todo
+				color = Red // Set the color to red
+			}
+
+			fmt.Printf("%s%d.    %s%s   	%s%s\n", color, i+1, Reset, task.Status, Reset, task.Description) // Print the task
 		}
 
 	}
+
 }
 
 // MarkTaskAsDone marks a task as done

@@ -6,10 +6,11 @@ interface for managing your task list.
 
 ## Features
 * Add a new task: Add a task with a description using simple commands
-* View tasks: Quickly display all tasks with their details
+* View tasks: Quickly display all tasks with their details.
 * Update tasks: Simple to modify existing tasks
 * Delete tasks: Remove tasks from your list
 * Data persistence: Tasks are saved and persist across app restarts
+* When a task is marked done, it turns green. When it is marked todo, it turns red
 
 ## Installation
 

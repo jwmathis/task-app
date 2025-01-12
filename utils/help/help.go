@@ -11,15 +11,16 @@ func CheckErr(e error) {
 
 // Function to print usage instructions
 func PrintUsage() {
-	fmt.Println("Usage syntax: task-app [command] [arguments]")
+	fmt.Println("Usage syntax: task [command] [arguments]")
 	fmt.Println("Valid commands include: add, list, delete, or done.")
-	fmt.Println("Example: task-app add \"Buy groceries\"")
+	fmt.Println("Example: task add \"Buy groceries\"")
+	fmt.Println("Type task -help for more information.")
 }
 
 // Function to print help menu
 func PrintHelp() {
 	fmt.Println("Task App Help Menu:")
-	fmt.Println("Usage: task-app <command> [options]")
+	fmt.Println("Usage: task <command> [options]")
 	fmt.Println("Commands:")
 	fmt.Println("  add <description>   - Add a new task with description")
 	fmt.Println("  list   - List all tasks")
