@@ -2,6 +2,21 @@ package help
 
 import "fmt"
 
+// Function to check for errors
+func CheckErr(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
+
+// Function to print usage instructions
+func PrintUsage() {
+	fmt.Println("Usage syntax: task-app [command] [arguments]")
+	fmt.Println("Valid commands include: add, list, delete, or done.")
+	fmt.Println("Example: task-app add \"Buy groceries\"")
+}
+
+// Function to print help menu
 func PrintHelp() {
 	fmt.Println("Task App Help Menu:")
 	fmt.Println("Usage: task-app <command> [options]")
