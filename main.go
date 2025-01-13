@@ -91,6 +91,8 @@ func main() {
 		taskID := os.Args[2]
 		if taskID == "all" {
 			existing_tasks = []task.Task{} // Delete all tasks
+			// Print a confirmation message
+			fmt.Printf("All tasks deleted.\n")
 		} else {
 			// Convert the task ID to an integer
 			taskID_int, err := strconv.Atoi(taskID)

@@ -9,8 +9,13 @@ func CheckErr(e error) {
 	}
 }
 
+func ClearScreen() {
+	fmt.Print("\033[H\033[2J")
+}
+
 // Function to print usage instructions
 func PrintUsage() {
+	ClearScreen()
 	fmt.Println("Usage syntax: task [command] [arguments]")
 	fmt.Println("Valid commands include: add, list, delete, or done.")
 	fmt.Println("Example: task add \"Buy groceries\"")
@@ -19,12 +24,14 @@ func PrintUsage() {
 
 // Function to print help menu
 func PrintHelp() {
-	fmt.Println("Task App Help Menu:")
-	fmt.Println("Usage: task <command> [options]")
-	fmt.Println("Commands:")
-	fmt.Println("  add <description>   - Add a new task with description")
-	fmt.Println("  list   - List all tasks")
-	fmt.Println("  delete <task-id>	- Delete a task by its ID")
-	fmt.Println("  done   - Mark a task as done")
-	fmt.Println("  -help   - Display this help menu")
+	ClearScreen()
+	fmt.Println("\nTask App Help Menu:")
+	fmt.Println("\nUsage: ./task <command> [options]\n")
+	fmt.Println("Commands:             	Example: 			Meaning:")
+	fmt.Println("----------------	--------------------		-----------------------")
+	fmt.Println("add, a    		./task add <description>	- Add a new task with description")
+	fmt.Println("view, list, li    	./task view			- List all tasks")
+	fmt.Println("delete, del <task-id>	./task delete <task-id>		- Delete a task by its ID")
+	fmt.Println("done, complete    	./task done <task-id>		- Mark a task as done")
+	fmt.Println("-help   		./task -help			- Display this help menu\n")
 }

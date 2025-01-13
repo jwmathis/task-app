@@ -2,6 +2,7 @@ package task
 
 import (
 	"fmt"
+	"task-app/utils/help"
 )
 
 // Task represents a single task in the task app
@@ -22,6 +23,7 @@ const (
 
 // AddTask adds a new task to the task list
 func AddTask(existing_tasks []Task, description string) ([]Task, error) {
+	help.ClearScreen()
 
 	// Create a new task
 	new_task := Task{
@@ -36,11 +38,12 @@ func AddTask(existing_tasks []Task, description string) ([]Task, error) {
 
 // ListTasks lists all tasks in the task list
 func ListTasks(existing_tasks []Task) {
+	help.ClearScreen()
 	// Print the list of tasks
 	if len(existing_tasks) == 0 {
 
-		fmt.Println("No tasks found.") // Print a message if no tasks are found
-
+		fmt.Println("No tasks found. Add a task using the 'add' command.") // Print a message if no tasks are found
+		fmt.Println("Type task -help for more information.")
 	} else {
 
 		color := Reset // Default color
@@ -78,6 +81,8 @@ func MarkTaskAsDone(tasks []Task, taskID int) ([]Task, error) {
 
 // DeleteTask deletes a task
 func DeleteTask(tasks []Task, taskID int) ([]Task, error) {
+	help.ClearScreen()
+
 	// Check if the task ID is valid
 	if taskID < 1 || taskID > len(tasks) {
 		return nil, fmt.Errorf("invalid task ID: %d", taskID) // Return an error
