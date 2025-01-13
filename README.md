@@ -35,7 +35,7 @@ cd task-app
 1. To start the task app, run:
 
 ```
-go build -o task-app
+go build -o task.exe
 ```
 2. Afterwards, use the following command to run the app:
 
@@ -45,17 +45,21 @@ go build -o task-app
 ### Available Commands
 1. *Add Task* Add a new task to the list
 ```
-task-app add "Task description"
+./task add "Task description"
 ```
 2. *View Tasks* View all tasks
 ```
-task-app view
+./task view
 ```
 3. *Mark task complete* Mark task done
 ```
-task-app done <task-id>
+./task mark done <task-id>
 ```
-4. *Delete task* Delete task by ID
+4. *Mark task todo* Mark task as todo
 ```
-task-app del <task-id>
+./task mark todo <task-id>
+```
+5. *Delete task* Delete task by ID
+```
+./task del <task-id>
 ```
