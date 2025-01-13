@@ -69,7 +69,7 @@ func MarkTaskAsDone(tasks []Task, taskID int) ([]Task, error) {
 	// Check if the task ID is valid
 	if taskID < 1 || taskID > len(tasks) {
 
-		return nil, fmt.Errorf("invalid task ID: %d", taskID) // Return an error
+		return tasks, fmt.Errorf("invalid task ID: %d", taskID) // Return an error
 
 	}
 
@@ -77,6 +77,18 @@ func MarkTaskAsDone(tasks []Task, taskID int) ([]Task, error) {
 	tasks[taskID-1].Status = "done"
 
 	return tasks, nil // Return the updated tasks
+}
+
+func MarkTaskAsTodo(tasks []Task, taskID int) ([]Task, error) {
+	// Check if the task ID is valid
+	if taskID < 1 || taskID > len(tasks) {
+		return tasks, fmt.Errorf("invalid task ID: %d", taskID) // Return an error
+	}
+
+	// Mark the task as todo
+	tasks[taskID-1].Status = "todo"
+
+	return tasks, nil
 }
 
 // DeleteTask deletes a task

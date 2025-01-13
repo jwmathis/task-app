@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"task-app/utils/fileio"
 	"task-app/utils/help"
 	"task-app/utils/task"
@@ -46,7 +47,7 @@ func main() {
 		}
 
 		// Get the task description from the second argument
-		taskDescription := os.Args[2]
+		taskDescription := strings.Join(os.Args[2:], " ") // Join the arguments into a single string
 
 		// Add the task
 		existing_tasks, _ = task.AddTask(existing_tasks, taskDescription)
@@ -58,27 +59,36 @@ func main() {
 		// Handle listing tasks
 		task.ListTasks(existing_tasks)
 
-	case "done", "complete":
+	case "mark":
 		// Handle marking a task as done
 		if len(os.Args) < 3 {
 			fmt.Println("Please provide a task ID. Usage: task-app done [taskID]")
 			return
 		}
-
+		command := os.Args[2]
 		// Get the task ID
-		taskID := os.Args[2]
+		taskID := os.Args[3]
+		// Convert the task ID to an integer
+		taskID_int, err := strconv.Atoi(taskID)
+		help.CheckErr(err)
 
-		if taskID == "all" {
-			for i := range existing_tasks { // Iterate over the tasks
-				existing_tasks[i].Status = "done" // Mark all tasks as done
-			}
-		} else {
-			// Convert the task ID to an integer
-			taskID_int, err := strconv.Atoi(taskID)
-			help.CheckErr(err)
-
+		if command == "done" {
 			// Mark the task as done
-			existing_tasks, _ = task.MarkTaskAsDone(existing_tasks, taskID_int)
+			existing_tasks, err = task.MarkTaskAsDone(existing_tasks, taskID_int)
+			if err != nil {
+				help.CheckErr(err)
+			}
+			// Print a confirmation message
+			fmt.Printf("Task marked as done.\n")
+
+		} else if command == "todo" {
+			// Mark the task as todo
+			existing_tasks, err = task.MarkTaskAsTodo(existing_tasks, taskID_int)
+			if err != nil {
+				help.CheckErr(err)
+			}
+			// Print a confirmation message
+			fmt.Printf("Task marked as todo.\n")
 		}
 
 	case "delete", "del":
