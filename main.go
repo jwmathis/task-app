@@ -20,7 +20,7 @@ func main() {
 
 	if *helpFlag {
 		help.PrintHelp()
-		return 
+		return
 	}
 	// Check if the user provided a command
 	if len(os.Args) < 2 {
@@ -29,7 +29,7 @@ func main() {
 	}
 
 	// Get the command
-	command := string.ToLower(os.Args[1]) // Store first argument as command using inference and format correctly
+	command := strings.ToLower(os.Args[1]) // Store first argument as command using inference and format correctly
 
 	filePath := filepath.Join("data", "user_tasks.json") // Set the file path to the JSON file; cross-platform compatible
 	file, _ := fileio.CheckAndCreateFile(filePath)       // Check if file exists and create if not and open the file
@@ -65,7 +65,7 @@ func main() {
 		}
 
 		// Get next command
-		command := string.ToLower(os.Args[2])
+		command := strings.ToLower(os.Args[2])
 		// Get the task ID
 		taskID := os.Args[3]
 		// Convert the task ID to an integer
@@ -81,7 +81,7 @@ func main() {
 			// Print a confirmation message
 			fmt.Printf("Task marked as done.\n")
 
-		} else if command == "todo" {
+		} else if command == "todo" || command == "Pending" {
 			// Mark the task as todo
 			existing_tasks, err = task.MarkTaskAsTodo(existing_tasks, taskID_int)
 			if err != nil {

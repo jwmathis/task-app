@@ -14,20 +14,20 @@ type Task struct {
 
 // Define colors
 const (
-	Reset = "\033[0m" // Set color back to default color scheme of user terminal
+	Reset = "\033[0m"  // Set color back to default color scheme of user terminal
 	Red   = "\033[31m" // Set color scheme to red
 	Green = "\033[32m" // Set color scheme to green
 )
 
 // AddTask adds a new task to the task list
-func AddTask(existing_tasks []Task, description string) ([]Task) {
+func AddTask(existing_tasks []Task, description string) []Task {
 	help.ClearScreen()
 
 	// Create a new task
 	new_task := Task{
 		ID:          len(existing_tasks) + 1, // ID is based on length of Task array
 		Description: description,
-		Status:      "todo",
+		Status:      "todo", // Default status is set to "todo",
 	}
 
 	// Print a confirmation message
@@ -68,17 +68,14 @@ func ListTasks(existing_tasks []Task) {
 func MarkTaskAsDone(tasks []Task, taskID int) ([]Task, error) {
 	// Check if the task ID is valid
 	if taskID < 1 || taskID > len(tasks) {
-
 		return tasks, fmt.Errorf("invalid task ID: %d", taskID) // Return provided tasks and an error
-
 	}
 
-	// Chagnge the task status to done
-	tasks[taskID-1].Status = "Done"
+	// Change the task status to done
+	tasks[taskID-1].Status = "done"
 
 	return tasks, nil // Return the updated tasks and no error
 }
-
 
 // MarkTaskAsTodo changes a task status to "Pending"
 func MarkTaskAsTodo(tasks []Task, taskID int) ([]Task, error) {
@@ -88,7 +85,7 @@ func MarkTaskAsTodo(tasks []Task, taskID int) ([]Task, error) {
 	}
 
 	// Mark the task as todo
-	tasks[taskID-1].Status = "Pending"
+	tasks[taskID-1].Status = "todo"
 
 	return tasks, nil // Return updated tasks and no error
 }
@@ -103,13 +100,13 @@ func DeleteTask(tasks []Task, taskID int) ([]Task, error) {
 	}
 
 	var updatedTasks []Task // Create a new slice to hold the updated tasks
-	var new_updated_tasks []Task
+	//var new_updated_tasks []Task
 	var j int = 0
 	for _, task := range tasks { // Iterate over the tasks
 		if task.ID != taskID { // If the task ID is not the one to delete
 			updatedTasks = append(updatedTasks, task) // Append the task to the updated slice
-			updatedTasks[j].ID = j + 1	// Change the task ID
-			j++ // Increment j
+			updatedTasks[j].ID = j + 1                // Change the task ID
+			j++                                       // Increment j
 		}
 	}
 

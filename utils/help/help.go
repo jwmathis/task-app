@@ -1,11 +1,15 @@
 package help
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 // Function to check for errors
 func CheckErr(e error) {
 	if e != nil {
-		fmt.Println("Error: ", e)
+		fmt.Println("Error: ", e) // Print error
+		os.Exit(1)                // Exit program with error
 	}
 }
 
