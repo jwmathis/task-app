@@ -113,11 +113,6 @@ func DeleteTask(tasks []Task, taskID int) ([]Task, error) {
 		}
 	}
 
-	// for i, task := range updatedTasks { // Iterate over the updated tasks
-	// 	task.ID = i + 1
-	// 	new_updated_tasks = append(new_updated_tasks, task) // Add the task to the new updated slice
-	// }
-
 	// Print a confirmation message
 	fmt.Printf("Task deleted.\n")
 
