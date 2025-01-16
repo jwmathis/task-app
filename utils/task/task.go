@@ -32,6 +32,9 @@ func AddTask(existing_tasks []Task, description string) ([]Task, error) {
 		Status:      "todo",
 	}
 
+	// Print a confirmation message
+	fmt.Printf("Task added: %s\n", description)
+
 	// Append the new task to the existing tasks and return
 	return append(existing_tasks, new_task), nil
 }
@@ -97,15 +100,24 @@ func DeleteTask(tasks []Task, taskID int) ([]Task, error) {
 
 	// Check if the task ID is valid
 	if taskID < 1 || taskID > len(tasks) {
-		return nil, fmt.Errorf("invalid task ID: %d", taskID) // Return an error
+		return tasks, fmt.Errorf("invalid task ID: %d", taskID) // Return original tasks and an error
 	}
 
-	var updatedTasks []Task      // Create a new slice to hold the updated tasks
-	for i, task := range tasks { // Iterate over the tasks
+	var updatedTasks []Task // Create a new slice to hold the updated tasks
+	var new_updated_tasks []Task
+	for _, task := range tasks { // Iterate over the tasks
 		if task.ID != taskID { // If the task ID is not the one to delete
-			task.ID = i + 1                           // Update the task ID
 			updatedTasks = append(updatedTasks, task) // Add the task to the updated slice
 		}
 	}
-	return updatedTasks, nil
+
+	for i, task := range updatedTasks { // Iterate over the updated tasks
+		task.ID = i + 1
+		new_updated_tasks = append(new_updated_tasks, task) // Add the task to the new updated slice
+	}
+
+	// Print a confirmation message
+	fmt.Printf("Task deleted.\n")
+
+	return new_updated_tasks, nil
 }

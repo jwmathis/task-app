@@ -52,9 +52,6 @@ func main() {
 		// Add the task
 		existing_tasks, _ = task.AddTask(existing_tasks, taskDescription)
 
-		// Print a confirmation message
-		fmt.Printf("Task added: %s\n", taskDescription)
-
 	case "list", "li", "view":
 		// Handle listing tasks
 		task.ListTasks(existing_tasks)
@@ -109,10 +106,8 @@ func main() {
 			help.CheckErr(err)
 
 			// Delete the task
-			existing_tasks, _ = task.DeleteTask(existing_tasks, taskID_int)
-
-			// Print a confirmation message
-			fmt.Printf("Task deleted.\n")
+			existing_tasks, err = task.DeleteTask(existing_tasks, taskID_int)
+			help.CheckErr(err)
 		}
 
 	default:
