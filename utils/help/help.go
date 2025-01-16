@@ -5,7 +5,7 @@ import "fmt"
 // Function to check for errors
 func CheckErr(e error) {
 	if e != nil {
-		panic(e)
+		fmt.Println("Error: ", e)
 	}
 }
 
@@ -16,9 +16,9 @@ func ClearScreen() {
 // Function to print usage instructions
 func PrintUsage() {
 	ClearScreen()
-	fmt.Println("Usage syntax: task [command] [arguments]")
-	fmt.Println("Valid commands include: add, list, delete, or done.")
-	fmt.Println("Example: task add \"Buy groceries\"")
+	fmt.Println("Usage syntax: ./task [command] [arguments]")
+	fmt.Println("Valid commands include: add, list, delete, or done. Type -help for more options.")
+	fmt.Println("Example: ./task add Buy groceries")
 	fmt.Println("Type task -help for more information.")
 }
 

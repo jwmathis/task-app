@@ -14,12 +14,13 @@ import (
 
 func main() {
 
+	// Creating CLI flag functionality for app (i.e. adds the option to allow "./task -help")
 	helpFlag := flag.Bool("help", false, "Show help menu")
 	flag.Parse()
 
 	if *helpFlag {
 		help.PrintHelp()
-		return
+		return 
 	}
 	// Check if the user provided a command
 	if len(os.Args) < 2 {
@@ -28,7 +29,7 @@ func main() {
 	}
 
 	// Get the command
-	command := os.Args[1] // Store first argument as command using inference
+	command := string.ToLower(os.Args[1]) // Store first argument as command using inference and format correctly
 
 	filePath := filepath.Join("data", "user_tasks.json") // Set the file path to the JSON file; cross-platform compatible
 	file, _ := fileio.CheckAndCreateFile(filePath)       // Check if file exists and create if not and open the file
@@ -50,7 +51,7 @@ func main() {
 		taskDescription := strings.Join(os.Args[2:], " ") // Join the arguments into a single string
 
 		// Add the task
-		existing_tasks, _ = task.AddTask(existing_tasks, taskDescription)
+		existing_tasks = task.AddTask(existing_tasks, taskDescription)
 
 	case "list", "li", "view":
 		// Handle listing tasks
@@ -59,10 +60,12 @@ func main() {
 	case "mark":
 		// Handle marking a task as done
 		if len(os.Args) < 3 {
-			fmt.Println("Please provide a task ID. Usage: task-app done [taskID]")
+			fmt.Println("Please provide a task ID. Usage: ./task mark done <task ID>")
 			return
 		}
-		command := os.Args[2]
+
+		// Get next command
+		command := string.ToLower(os.Args[2])
 		// Get the task ID
 		taskID := os.Args[3]
 		// Convert the task ID to an integer
@@ -91,7 +94,7 @@ func main() {
 	case "delete", "del":
 		// Handle deleting a task
 		if len(os.Args) < 3 {
-			fmt.Println("Please provide a task ID. Usage: task-app delete [taskID]")
+			fmt.Println("Please provide a task ID. Usage: ./task delete <task ID>")
 			return
 		}
 		// Get the task ID
@@ -104,7 +107,6 @@ func main() {
 			// Convert the task ID to an integer
 			taskID_int, err := strconv.Atoi(taskID)
 			help.CheckErr(err)
-
 			// Delete the task
 			existing_tasks, err = task.DeleteTask(existing_tasks, taskID_int)
 			help.CheckErr(err)
