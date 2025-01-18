@@ -1,7 +1,7 @@
 # Task-App in Go
 
 This is a simple command-line application for managing tasks, written in Go. This app allows you to add, 
-view, update, and delte tasks. It uses basic file I/O for data persistence and offeres an easy-to-use 
+view, update, and delete tasks. It uses basic file I/O for data persistence and offeres an easy-to-use 
 interface for managing your task list.
 
 ## Features
