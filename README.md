@@ -40,7 +40,7 @@ go build -o task.exe
 2. Afterwards, use the following command to run the app:
 
 ```
-./task-app <command> [options]
+./task <command> [options]
 ```
 ### Available Commands
 1. *Add Task* Add a new task to the list
