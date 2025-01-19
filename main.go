@@ -29,10 +29,14 @@ func main() {
 	}
 
 	// Get the command
-	command := strings.ToLower(os.Args[1]) // Store first argument as command using inference and format correctly
-
-	filePath := filepath.Join("data", "user_tasks.json") // Set the file path to the JSON file; cross-platform compatible
-	file, _ := fileio.CheckAndCreateFile(filePath)       // Check if file exists and create if not and open the file
+	command := strings.ToLower(os.Args[1])   // Store first argument as command using inference and format correctly
+	exeDir, err := fileio.GetExecutableDir() // Get the path to the executable directory
+	help.CheckErr(err)
+	dataFolderPath := filepath.Join(exeDir, "data") // Set the path to the data folder
+	err = fileio.CheckFolderExists(dataFolderPath)  // Check if folder exists
+	help.CheckErr(err)
+	filePath := filepath.Join(dataFolderPath, "user_tasks.json") // Set the file path to the JSON file; cross-platform compatible
+	file, _ := fileio.CheckAndCreateFile(filePath)               // Check if file exists and create if not and open the file
 	defer file.Close()
 	existing_tasks, err := fileio.ReadFromJsonFile(filePath) // Read tasks from the JSON file
 	help.CheckErr(err)

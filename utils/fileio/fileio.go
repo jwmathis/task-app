@@ -5,8 +5,33 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"task-app/utils/task"
 )
+
+func GetExecutableDir() (string, error) {
+	exePath, err := os.Executable()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Dir(exePath), nil
+}
+
+func CheckFolderExists(folderPath string) error {
+	// Check if folder exists
+	if _, err := os.Stat(folderPath); err != nil { // Check if folder exists
+		if os.IsNotExist(err) { // If folder does not exist
+			// Create the folder
+			err = os.MkdirAll(folderPath, 0755) // Create the folder
+			if err != nil {                     // If error creating folder
+				return fmt.Errorf("error creating folder: %w", err) // Return error
+			}
+		} else {
+			return fmt.Errorf("error checking folder: %w", err)
+		}
+	}
+	return nil
+}
 
 // Checks if the file exists and creates it if necessary
 func CheckAndCreateFile(filename string) (*os.File, error) {
@@ -26,7 +51,7 @@ func CheckAndCreateFile(filename string) (*os.File, error) {
 
 	// If File exists
 	file, openErr := os.OpenFile(filename, os.O_RDWR, 0644) // Open the file
-	if openErr != nil { // If error opening file
+	if openErr != nil {                                     // If error opening file
 		return nil, fmt.Errorf("file exists but error opening file: %w", openErr) // Return no file and error if opening file fails
 	}
 	return file, nil // Return the file and no error if successful file opening

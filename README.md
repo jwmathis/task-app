@@ -29,37 +29,46 @@ git clone https://github.com/jwmathis/task-app.git
 cd task-app
 ```
 
+3. Build the binary
+```
+go build -o task
+```
+4. Move the binary to your preferred location
+```
+mv task.exe C:\Tools
+```
+5. Add to PATH (optional)
+    1. Press Win + S, type "Environment Variables", and select "Edit the system environment variables".
+    2. In the System Properties window, click the Environment Variables button.
+    3. Under system variables, find and select the Path variable, then click Edit.
+    4. Click New and enter the directory containing task.exe (e.g. C\:Tools)
+    5. Click OK to save and close all windows.
+6. Test the installation: Open a new terminal window and type
+```
+task --help
+```
+    If installed correctly, the help text for your task app will display
+
 ## Usage
 
-### Running the app
-1. To start the task app, run:
-
-```
-go build -o task.exe
-```
-2. Afterwards, use the following command to run the app:
-
-```
-./task <command> [options]
-```
 ### Available Commands
 1. *Add Task* Add a new task to the list
 ```
-./task add "Task description"
+task add "Task description"
 ```
 2. *View Tasks* View all tasks
 ```
-./task view
+task view
 ```
 3. *Mark task complete* Mark task done
 ```
-./task mark done <task-id>
+task mark done <task-id>
 ```
 4. *Mark task todo* Mark task as todo
 ```
-./task mark todo <task-id>
+task mark todo <task-id>
 ```
 5. *Delete task* Delete task by ID
 ```
-./task del <task-id>
+task del <task-id>
 ```
