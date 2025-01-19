@@ -76,7 +76,7 @@ func main() {
 		taskID_int, err := strconv.Atoi(taskID)
 		help.CheckErr(err)
 
-		if command == "done" {
+		if command == "done" || command == "complete" {
 			// Mark the task as done
 			existing_tasks, err = task.MarkTaskAsDone(existing_tasks, taskID_int)
 			if err != nil {
@@ -85,7 +85,7 @@ func main() {
 			// Print a confirmation message
 			fmt.Printf("Task marked as done.\n")
 
-		} else if command == "todo" || command == "Pending" {
+		} else if command == "todo" || command == "pending" {
 			// Mark the task as todo
 			existing_tasks, err = task.MarkTaskAsTodo(existing_tasks, taskID_int)
 			if err != nil {
