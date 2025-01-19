@@ -2,7 +2,7 @@
 
 This is a simple command-line application for managing tasks, written in Go. This app allows you to add, 
 view, update, and delete tasks. It uses basic file I/O for data persistence and offers an easy-to-use 
-interface for managing your task list.
+interface for managing your task list from within the command line utility.
 
 ## Features
 * Add a new task: Add a task with a description using simple commands
@@ -13,10 +13,11 @@ interface for managing your task list.
 * When a task is marked done, it turns green. When it is marked todo, it turns red
 
 ## Installation
+Build Task-App from source:
 
 ### Prerequisites
 
-Make sure you have the latest version of Go installed. You can download and install it from the official [Go website](https://go.dev/).
+Install the latest version of Go installed. You can download and install it from the official [Go website](https://go.dev/).
 
 1. Clone the repository
 
@@ -47,7 +48,7 @@ mv task.exe C:\Tools
 ```
 task --help
 ```
-    If installed correctly, the help text for your task app will display
+If installed correctly, the help text for your task app will display
 
 ## Usage
 
